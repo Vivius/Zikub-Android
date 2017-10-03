@@ -23,4 +23,10 @@ public class ExampleInstrumentedTest {
 
         assertEquals("info706.zikub", appContext.getPackageName());
     }
+
+    @Test
+    public void httpRequestTest() throws Exception {
+        
+
+    }
 }
