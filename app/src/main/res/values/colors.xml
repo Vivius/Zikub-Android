@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="blanc">#fff</color>
+
+    <color name="connexion">#fff</color>
+    <color name="inscription">#000</color>
+    <color name="conditions">#ddd</color>
+
+    <color name="facebook">#3C5998</color>
+    <color name="twitter">#409AD5</color>
+    <color name="google">#E14739</color>
 </resources>
