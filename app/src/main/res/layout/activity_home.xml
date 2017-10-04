@@ -39,7 +39,7 @@
         <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_above="@id/btnFacebook">
+            android:layout_above="@+id/btnFacebook">
 
             <LinearLayout android:layout_width="0dp" android:layout_height="fill_parent"
                 android:layout_weight="1">
@@ -74,21 +74,21 @@
             android:id="@+id/btnFacebook"
             style="@style/btnHome"
             android:text="@string/btnConnexionFB"
-            android:layout_above="@id/btnTwitter"
+            android:layout_above="@+id/btnTwitter"
             android:background="@color/facebook"/>
 
         <Button
             android:id="@+id/btnTwitter"
             style="@style/btnHome"
             android:text="@string/btnConnexionT"
-            android:layout_above="@id/btnGoogle"
+            android:layout_above="@+id/btnGoogle"
             android:background="@color/twitter"/>
 
         <Button
             android:id="@+id/btnGoogle"
             style="@style/btnHome"
             android:text="@string/btnConnexionG"
-            android:layout_above="@id/conditions"
+            android:layout_above="@+id/conditions"
             android:background="@color/google"/>
 
         <TextView
