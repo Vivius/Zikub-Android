@@ -88,4 +88,14 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
+    <!-- home -->
+    <string name="zikub">Zikub</string>
+    <string name="devise">Partagez vos musiques avec vos amis</string>
+    <string name="conditions">Conditions d\'utilisation</string>
+    <string name="btnConnexion">Connexion</string>
+    <string name="btnInscription">Inscription</string>
+    <string name="btnConnexionFB">Se connecter avec Facebook</string>
+    <string name="btnConnexionT">Se connecter avec Twitter</string>
+    <string name="btnConnexionG">Se connecter avec Google +</string>
 </resources>

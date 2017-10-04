@@ -1,9 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="info706.zikub.HomeActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_zikub"
+        android:backgroundTint="#aaa"
+        android:backgroundTintMode="multiply">
+
+        <TextView
+            android:id="@+id/textZikub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/blanc"
+            android:textSize="50dp"
+            android:textStyle="bold"
+            android:layout_marginTop="50dp"
+            android:text="@string/zikub" />
+
+        <TextView
+            android:id="@+id/textDevise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/devise"
+            android:textColor="@color/blanc"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_below="@id/textZikub" />
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_above="@id/btnFacebook">
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/btnConnexion"
+                    style="@style/btnHome"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:text="@string/btnConnexion"
+                    android:textColor="@color/inscription"
+                    android:background="@color/connexion"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/btnInscription"
+                    style="@style/btnHome"
+                    android:layout_height="70dp"
+                    android:text="@string/btnInscription"
+                    android:textColor="@color/connexion"
+                    android:background="@color/inscription"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnFacebook"
+            style="@style/btnHome"
+            android:text="@string/btnConnexionFB"
+            android:layout_above="@id/btnTwitter"
+            android:background="@color/facebook"/>
+
+        <Button
+            android:id="@+id/btnTwitter"
+            style="@style/btnHome"
+            android:text="@string/btnConnexionT"
+            android:layout_above="@id/btnGoogle"
+            android:background="@color/twitter"/>
+
+        <Button
+            android:id="@+id/btnGoogle"
+            style="@style/btnHome"
+            android:text="@string/btnConnexionG"
+            android:layout_above="@id/conditions"
+            android:background="@color/google"/>
+
+        <TextView
+            android:id="@+id/conditions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/conditions"
+            android:textColor="@color/conditions"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="7dp"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+</FrameLayout>
