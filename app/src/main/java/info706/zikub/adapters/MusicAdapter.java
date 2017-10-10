@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -46,9 +49,11 @@ public class MusicAdapter extends ArrayAdapter {
 
         TextView title = (TextView)convertView.findViewById(R.id.title);
         TextView author = (TextView)convertView.findViewById(R.id.author);
+        ImageView cover = (ImageView)convertView.findViewById(R.id.cover);
 
         title.setText(musics.get(position).getTitle());
         author.setText(musics.get(position).getAuthor());
+        Picasso.with(getContext()).load(musics.get(position).getCover()).resize(200,200).centerCrop().into(cover);
 
         return convertView;
     }
