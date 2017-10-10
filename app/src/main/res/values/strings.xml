@@ -9,7 +9,7 @@
     <string name="prompt_password_confirm">Confirmation du mot de passe</string>
     <string name="action_sign_in">Se connecter</string>
     <string name="action_sign_in_short">Se connecter</string>
-    <string name="action_register">S\'inscrirer</string>
+    <string name="action_register">S\'inscrire</string>
     <string name="error_no_username">Veuillez entrer un nom d\'utilisateur</string>
     <string name="error_invalid_email">Cette adresse est invalide</string>
     <string name="error_invalid_password">Mot de passe trop court</string>
