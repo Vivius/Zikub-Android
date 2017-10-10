@@ -58,7 +58,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     // UI references.
     private AutoCompleteTextView mEmailView;
+    private EditText mNameView;
     private EditText mPasswordView;
+    private EditText mConfirmationView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -70,7 +72,31 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
+        mNameView = (EditText) findViewById(R.id.nom);
+        mNameView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        mConfirmationView = (EditText) findViewById(R.id.password_confirm);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -149,20 +175,39 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         }
 
         // Reset errors.
+        mNameView.setError(null);
         mEmailView.setError(null);
         mPasswordView.setError(null);
+        mConfirmationView.setError(null);
 
         // Store values at the time of the login attempt.
+        String username = mNameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String passwordConfirm = mConfirmationView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
+        // Check if a password was entered
+        if (TextUtils.isEmpty(password))
+        {
+            mPasswordView.setError(getString(R.string.error_no_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        else if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check if password and confirmation match
+        if (!isConfirmationValid(password, passwordConfirm))
+        {
+            mConfirmationView.setError(getString(R.string.error_invalid_password_confirmation));
+            focusView = mConfirmationView;
             cancel = true;
         }
 
@@ -174,6 +219,14 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
+            cancel = true;
+        }
+
+        // Check if a username was entered
+        if (TextUtils.isEmpty(username))
+        {
+            mNameView.setError(getString(R.string.error_no_username));
+            focusView = mNameView;
             cancel = true;
         }
 
@@ -191,13 +244,15 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 6;
+    }
+
+    private boolean isConfirmationValid(String password, String confirmation) {
+        return password.equals(confirmation);
     }
 
     /**
