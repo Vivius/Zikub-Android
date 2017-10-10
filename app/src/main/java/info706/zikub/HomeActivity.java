@@ -10,6 +10,12 @@ import info706.zikub.models.User;
 
 public class HomeActivity extends AppCompatActivity {
 
+    // TODO: connexion réseaux sociaux
+    // facebook     https://blog.rolandl.fr/2014-04-26-android-mettre-en-place-le-facebook-connect-dans-une-application.html
+    // twitter      https://blog.rolandl.fr/2015-01-25-mettre-en-place-le-twitter-oauth-dans-une-application-android.html
+    // google       https://blog.rolandl.fr/2015-02-15-mettre-en-place-la-connexion-google-plus-dans-une-application-android.html
+    //              https://developers.google.com/identity/sign-in/android/start-integrating
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
