@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("OAUTH_TOKEN", User.getOauthToken(getApplicationContext()));
+        // Log.d("OAUTH_TOKEN", User.getOauthToken(getApplicationContext()));
 
         playlist = (ListView) findViewById(R.id.playlist);
         youtubePlayer = new YoutubePlayer(this);
