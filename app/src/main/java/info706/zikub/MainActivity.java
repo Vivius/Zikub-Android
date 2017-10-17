@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String PLAYLIST_ID_TAG = "PLAYLIST_ID";
     public static final String MUSIC_RANK_TAG = "MUSIC_RANK";
+
+    ImageButton btnPlayPause = (ImageButton)findViewById(R.id.btnPlayPause);
+    ImageButton btnNext = (ImageButton)findViewById(R.id.btnNext);
+    ImageButton btnPrevious = (ImageButton)findViewById(R.id.btnPrevious);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,5 +99,35 @@ public class MainActivity extends AppCompatActivity {
 
         // TEST - Lancement de la lecture d'une musique Youtube dans l'application.
         youtubePlayer.start("https://www.youtube.com/watch?v=_cB3HXVvm0g");
+
+
+        // boutons lecteur
+
+        // bouton play/pause alterné
+        // joue, ou pause, la musique
+        btnPlayPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: lecture / pause
+                //TODO: alterner play/pause selon l'état du bouton, de la lecture...
+                btnPlayPause.setImageResource(R.drawable.ic_btnpause);
+            }
+        });
+
+        // start musique précédente
+        btnPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: start musique précédente
+            }
+        });
+
+        // start musique suivante
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: start musique suivante
+            }
+        });
     }
 }

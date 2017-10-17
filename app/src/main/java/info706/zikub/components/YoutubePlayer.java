@@ -44,7 +44,7 @@ public class YoutubePlayer {
     }
 
     /**
-     * Called to stop the music (if the medio player is playing).
+     * Called to stop the music (if the media player is playing).
      */
     public void pause() {
         if(mediaPlayer.isPlaying()) {
