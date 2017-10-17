@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import info706.zikub.adapters.MusicAdapter;
+import info706.zikub.components.YoutubePlayer;
 import info706.zikub.models.Music;
 import info706.zikub.models.PlayList;
 import info706.zikub.models.Setting;
@@ -27,14 +28,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private ListView playlist;
+    private YoutubePlayer youtubePlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("OAUTH_TOKEN", User.getOauthToken(getApplicationContext()));
-        playlist = (ListView) findViewById(R.id.playlist);
 
+        Log.d("OAUTH_TOKEN", User.getOauthToken(getApplicationContext()));
+
+        playlist = (ListView) findViewById(R.id.playlist);
+        youtubePlayer = new YoutubePlayer(this);
+
+        // Chargement de la playlist de l'utilisateur.
         Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Setting.API_HOST)
             .addConverterFactory(GsonConverterFactory.create())
@@ -64,25 +70,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                startActivity(intent);
+                // Tests
+                if(position == 0)
+                    youtubePlayer.pause();
+                if(position == 1)
+                    youtubePlayer.play();
+                if(position == 2)
+                    youtubePlayer.start("https://www.youtube.com/watch?v=h-T__qXRXXk");
+                if(position == 3)
+                    startActivity(intent);
             }
         });
 
-        // TEST
-        /*
-        YoutubeService serviceYoutube = retrofit.create(YoutubeService.class);
-        Call<List<Music>> caller2 = serviceYoutube.search(User.getOauthToken(getApplicationContext()), "lady gaga");
-        caller2.enqueue(new Callback<List<Music>>() {
-            @Override
-            public void onResponse(Call<List<Music>> call, Response<List<Music>> response) {
-                Log.d("YOUTUBE", response.body().toString());
-            }
-
-            @Override
-            public void onFailure(Call<List<Music>> call, Throwable throwable) {
-
-            }
-        });
-        */
+        // TEST - Lancement de la lecture d'une musique Youtube dans l'application.
+        youtubePlayer.start("https://www.youtube.com/watch?v=_cB3HXVvm0g");
     }
 }
