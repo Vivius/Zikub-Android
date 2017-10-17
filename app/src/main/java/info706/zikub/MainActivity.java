@@ -31,7 +31,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-    private ListView playlist;
+
     private YoutubePlayer youtubePlayer;
     private int playlistId;
     private List<Music> musics;
@@ -39,9 +39,10 @@ public class MainActivity extends AppCompatActivity {
     public static final String PLAYLIST_ID_TAG = "PLAYLIST_ID";
     public static final String MUSIC_RANK_TAG = "MUSIC_RANK";
 
-    ImageButton btnPlayPause = (ImageButton)findViewById(R.id.btnPlayPause);
-    ImageButton btnNext = (ImageButton)findViewById(R.id.btnNext);
-    ImageButton btnPrevious = (ImageButton)findViewById(R.id.btnPrevious);
+    private ImageButton btnPlayPause;
+    private ImageButton btnNext;
+    private ImageButton btnPrevious;
+    private ListView playlist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
         playlist = (ListView) findViewById(R.id.playlist);
         youtubePlayer = new YoutubePlayer(this);
+        btnPlayPause = (ImageButton)findViewById(R.id.btnPlayPause);
+        btnNext = (ImageButton)findViewById(R.id.btnNext);
+        btnPrevious = (ImageButton)findViewById(R.id.btnPrevious);
 
         // Chargement de la playlist de l'utilisateur.
         Retrofit retrofit = new Retrofit.Builder()
