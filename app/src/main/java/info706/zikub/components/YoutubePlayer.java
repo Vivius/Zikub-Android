@@ -13,10 +13,20 @@ import at.huber.youtubeExtractor.YtFile;
 public class YoutubePlayer {
     private MediaPlayer mediaPlayer;
     private Context context;
+    YoutubePlayerListener listener;
 
     public YoutubePlayer(Context context) {
         this.context = context;
         this.mediaPlayer = new MediaPlayer();
+    }
+
+    /**
+     * Allows to listen the player's events.
+     *
+     * @param listener YoutubePlayerListener
+     */
+    public void setYoutubePlayerListener(YoutubePlayerListener listener) {
+        this.listener = listener;
     }
 
     public void start(String videoUrl) {
@@ -27,17 +37,8 @@ public class YoutubePlayer {
                     // Itags list : http://www.genyoutube.net/formats-resolution-youtube-videos.html
                     int itag = 140;
                     String audioUrl = ytFiles.get(itag).getUrl();
-
-                    /*
-                    // Parcours des ressources disponibles pour la vidéo Youtube.
-                    for(int i=0; i<ytFiles.size(); ++i) {
-                        int key = ytFiles.keyAt(i);
-                    }
-                    */
-
                     Log.i("AUDIO URL", audioUrl);
-
-                    new YoutubePlayerAsync(mediaPlayer).execute(audioUrl);
+                    new YoutubePlayerAsync(YoutubePlayer.this, mediaPlayer).execute(audioUrl);
                 }
             }
         }.extract(videoUrl, true, true);
@@ -60,13 +61,24 @@ public class YoutubePlayer {
             mediaPlayer.start();
         }
     }
+
+    /**
+     * Indicates if the player is running.
+     *
+     * @return Boolean
+     */
+    public Boolean isPlaying() {
+        return mediaPlayer.isPlaying();
+    }
 }
 
 class YoutubePlayerAsync extends AsyncTask<String, Void, Boolean> {
+    private YoutubePlayer youtubePlayer;
     private MediaPlayer mediaPlayer;
 
-    public YoutubePlayerAsync(MediaPlayer mediaPlayer) {
+    public YoutubePlayerAsync(YoutubePlayer youtubePlayer, MediaPlayer mediaPlayer) {
         this.mediaPlayer = mediaPlayer;
+        this.youtubePlayer = youtubePlayer;
     }
 
     @Override
@@ -101,6 +113,8 @@ class YoutubePlayerAsync extends AsyncTask<String, Void, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
         mediaPlayer.start();
+        if(youtubePlayer.listener != null)
+            youtubePlayer.listener.onMusicBegin();
         Log.i("YOUTUBE PLAYER", "Music playing...");
     }
 }

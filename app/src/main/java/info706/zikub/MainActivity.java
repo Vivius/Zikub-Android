@@ -9,8 +9,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,6 +21,7 @@ import java.util.List;
 
 import info706.zikub.adapters.MusicAdapter;
 import info706.zikub.components.YoutubePlayer;
+import info706.zikub.components.YoutubePlayerListener;
 import info706.zikub.models.Music;
 import info706.zikub.models.PlayList;
 import info706.zikub.models.Setting;
@@ -36,12 +40,15 @@ public class MainActivity extends AppCompatActivity {
     private int playlistId;
     private List<Music> musics;
 
+    private int selectedMusic = -1;
+
     public static final String PLAYLIST_ID_TAG = "PLAYLIST_ID";
     public static final String MUSIC_RANK_TAG = "MUSIC_RANK";
 
     private ImageButton btnPlayPause;
     private ImageButton btnNext;
     private ImageButton btnPrevious;
+    private ImageView cover;
     private ListView playlist;
 
     @Override
@@ -56,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         btnPlayPause = (ImageButton)findViewById(R.id.btnPlayPause);
         btnNext = (ImageButton)findViewById(R.id.btnNext);
         btnPrevious = (ImageButton)findViewById(R.id.btnPrevious);
+        cover = (ImageView) findViewById(R.id.cover);
 
         // Chargement de la playlist de l'utilisateur.
         Retrofit retrofit = new Retrofit.Builder()
@@ -102,19 +110,33 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // TEST - Lancement de la lecture d'une musique Youtube dans l'application.
-        youtubePlayer.start("https://www.youtube.com/watch?v=_cB3HXVvm0g");
+        // youtubePlayer.start("https://www.youtube.com/watch?v=_cB3HXVvm0g");
+
+        youtubePlayer.setYoutubePlayerListener(new YoutubePlayerListener() {
+            @Override
+            public void onMusicBegin() {
+                Log.i("BEGIN", "The music begin !");
+            }
+        });
 
 
-        // boutons lecteur
-
-        // bouton play/pause alterné
-        // joue, ou pause, la musique
+        // Bontons du lecteur
         btnPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: lecture / pause
-                //TODO: alterner play/pause selon l'état du bouton, de la lecture...
-                btnPlayPause.setImageResource(R.drawable.ic_btnpause);
+                if(selectedMusic == -1) {
+                    selectedMusic = 0;
+                    youtubePlayer.start(musics.get(selectedMusic).getUrl());
+                    Picasso.with(getApplicationContext()).load(musics.get(selectedMusic).getCover()).resize(200,200).centerCrop().into(cover);
+                }
+
+                if(youtubePlayer.isPlaying()) {
+                    btnPlayPause.setImageResource(R.drawable.ic_btnplay);
+                    youtubePlayer.pause();
+                } else {
+                    btnPlayPause.setImageResource(R.drawable.ic_btnpause);
+                    youtubePlayer.play();
+                }
             }
         });
 
@@ -122,7 +144,12 @@ public class MainActivity extends AppCompatActivity {
         btnPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: start musique précédente
+                if(selectedMusic > 0) {
+                    selectedMusic--;
+                    youtubePlayer.start(musics.get(selectedMusic).getUrl());
+                    Picasso.with(getApplicationContext()).load(musics.get(selectedMusic).getCover()).resize(200,200).centerCrop().into(cover);
+                    btnPlayPause.setImageResource(R.drawable.ic_btnpause);
+                }
             }
         });
 
@@ -130,8 +157,22 @@ public class MainActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: start musique suivante
+                if(selectedMusic < 5) {
+                    selectedMusic++;
+                    youtubePlayer.start(musics.get(selectedMusic).getUrl());
+                    Picasso.with(getApplicationContext()).load(musics.get(selectedMusic).getCover()).resize(200,200).centerCrop().into(cover);
+                    btnPlayPause.setImageResource(R.drawable.ic_btnpause);
+                }
             }
         });
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // Stop le lecteur si on change d'activité.
+        youtubePlayer.pause();
+        btnPlayPause.setImageResource(R.drawable.ic_btnplay);
     }
 }
