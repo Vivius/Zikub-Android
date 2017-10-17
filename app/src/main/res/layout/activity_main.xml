@@ -30,15 +30,29 @@
         android:background="@color/colorPrimaryDark"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/cover"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@color/blanc"></ImageView>
+        <ViewSwitcher
+            android:id="@+id/playerViewSwitcher"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/buffering"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="6dp" />
+
+            <ImageView
+                android:id="@+id/cover"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
+        </ViewSwitcher>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="6dp">
 
             <ImageButton
                 android:id="@+id/btnPrevious"

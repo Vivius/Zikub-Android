@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.squareup.picasso.Picasso;
 
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnPrevious;
     private ImageView cover;
     private ListView listView;
+    private ViewSwitcher playerViewSwitcher;
 
     public MainActivity() {
         playList = new PlayList();
@@ -66,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
         btnNext = (ImageButton)findViewById(R.id.btnNext);
         btnPrevious = (ImageButton)findViewById(R.id.btnPrevious);
         cover = (ImageView) findViewById(R.id.cover);
+        playerViewSwitcher = (ViewSwitcher) findViewById(R.id.playerViewSwitcher);
+
+        playerViewSwitcher.reset();
 
         // Chargement de la playList de l'utilisateur.
         Retrofit retrofit = new Retrofit.Builder()
@@ -117,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onMusicBegin() {
                 Log.i("BEGIN", "The music begin !");
+                playerViewSwitcher.setDisplayedChild(1);
             }
         });
 
@@ -180,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
             youtubePlayer.start(selectedMusic.getUrl());
             Picasso.with(getApplicationContext()).load(selectedMusic.getCover()).resize(200,200).centerCrop().into(cover);
             btnPlayPause.setImageResource(R.drawable.ic_btnpause);
+            playerViewSwitcher.setDisplayedChild(0);
         }
     }
 }
