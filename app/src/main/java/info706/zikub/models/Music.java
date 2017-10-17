@@ -6,10 +6,9 @@ public class Music {
     private String created_at;
     private String title;
     private String author;
-    private int duration;
     private String cover;
-    private String provider;
     private String url;
+    private int rank;
     private int playlist_id;
 
     public int getId() {
@@ -32,23 +31,42 @@ public class Music {
         return author;
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
     public String getCover() {
         return cover;
-    }
-
-    public String getProvider() {
-        return provider;
     }
 
     public String getUrl() {
         return url;
     }
 
+    public int getRank() {
+        return rank;
+    }
+
     public int getPlaylist_id() {
         return playlist_id;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public void setPlaylist_id(int playlist_id) {
+        this.playlist_id = playlist_id;
+    }
+
+    @Override
+    public String toString() {
+        return "Music{" +
+                "id=" + id +
+                ", uddated_at='" + uddated_at + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", cover='" + cover + '\'' +
+                ", url='" + url + '\'' +
+                ", rank=" + rank +
+                ", playlist_id=" + playlist_id +
+                '}';
     }
 }

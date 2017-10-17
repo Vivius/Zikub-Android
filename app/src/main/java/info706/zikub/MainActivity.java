@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import info706.zikub.adapters.MusicAdapter;
@@ -29,6 +31,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private ListView playlist;
     private YoutubePlayer youtubePlayer;
+    private int playlistId;
+    private List<Music> musics;
+
+    public static final String PLAYLIST_ID_TAG = "PLAYLIST_ID";
+    public static final String MUSIC_RANK_TAG = "MUSIC_RANK";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +59,22 @@ public class MainActivity extends AppCompatActivity {
         caller.enqueue(new Callback<PlayList>() {
             @Override
             public void onResponse(Call<PlayList> call, Response<PlayList> response) {
-                Log.d("SUCCESS", "Response success");
-                Log.d("CONTENT", response.body().toString());
+                playlistId = response.body().getId();
+                musics = response.body().getMusics();
 
-                ArrayAdapter adapter = new MusicAdapter(getApplicationContext(), R.layout.music_item, response.body().getMusics());
+                Collections.sort(musics, new Comparator<Music>() {
+                    @Override
+                    public int compare(Music o1, Music o2) {
+                        return  o1.getRank() > o2.getRank() ? 1 : -1;
+                    }
+                });
+
+                ArrayAdapter adapter = new MusicAdapter(getApplicationContext(), R.layout.music_item, musics);
                 playlist.setAdapter(adapter);
             }
 
             @Override
             public void onFailure(Call<PlayList> call, Throwable throwable) {
-                Log.d("ERROR", "Response error");
                 Toast.makeText(getApplicationContext(), "Impossible d'accéder au serveur", Toast.LENGTH_LONG).show();
             }
         });
@@ -70,15 +83,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                // Tests
-                if(position == 0)
-                    youtubePlayer.pause();
-                if(position == 1)
-                    youtubePlayer.play();
-                if(position == 2)
-                    youtubePlayer.start("https://www.youtube.com/watch?v=h-T__qXRXXk");
-                if(position == 3)
-                    startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putInt(MUSIC_RANK_TAG, position + 1);
+                bundle.putInt(PLAYLIST_ID_TAG, playlistId);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
