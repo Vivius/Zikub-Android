@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
      * @param index int
      */
     private void startMusicByIndex(int index) {
-        if(index >= 0 && index <= playList.getMusics().size()) {
+        if(index >= 0 && index < playList.getMusics().size()) {
             selectedIndex = index;
             selectedMusic = playList.getMusics().get(index);
             youtubePlayer.start(selectedMusic.getUrl());
