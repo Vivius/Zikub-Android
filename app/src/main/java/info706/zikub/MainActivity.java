@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("Ma Playliste");
 
         // Log.d("OAUTH_TOKEN", User.getOauthToken(getApplicationContext()));
 
@@ -107,12 +108,15 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /*
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt(MUSIC_RANK_TAG, position + 1);
                 bundle.putInt(PLAYLIST_ID_TAG, playList.getId());
                 intent.putExtras(bundle);
                 startActivity(intent);
+                */
+                startMusicByIndex(position);
             }
         });
 
@@ -124,6 +128,13 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("BEGIN", "The music begin !");
                 playerViewSwitcher.setDisplayedChild(1);
             }
+
+            @Override
+            public void onMusicEnd() {
+                Log.i("END", "The music is finished");
+                startMusicByIndex(selectedIndex + 1);
+            }
+
         });
 
 

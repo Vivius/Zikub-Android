@@ -93,6 +93,8 @@ class YoutubePlayerAsync extends AsyncTask<String, Void, Boolean> {
                 public void onCompletion(MediaPlayer mediaPlayer) {
                     mediaPlayer.stop();
                     mediaPlayer.reset();
+                    if(youtubePlayer.listener != null)
+                        youtubePlayer.listener.onMusicEnd();
                 }
             });
 
