@@ -3,12 +3,16 @@ package info706.zikub;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -21,6 +25,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import info706.zikub.adapters.MusicAdapter;
+import info706.zikub.adapters.MusicEditionAdapter;
+import info706.zikub.adapters.MusicEditionAdapterListener;
 import info706.zikub.components.YoutubePlayer;
 import info706.zikub.components.YoutubePlayerListener;
 import info706.zikub.models.Music;
@@ -41,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private Music selectedMusic = null;
     private int selectedIndex = 0;
 
+    private Boolean isEditionMode = false;
+
     public static final String PLAYLIST_ID_TAG = "PLAYLIST_ID";
     public static final String MUSIC_RANK_TAG = "MUSIC_RANK";
 
@@ -50,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView cover;
     private ListView listView;
     private ViewSwitcher playerViewSwitcher;
+    private Toolbar toolbar;
+    private LinearLayout lecteur;
+
+    private MusicEditionAdapter editionAdapter;
+    private MusicAdapter readAdapter;
 
     public MainActivity() {
         playList = new PlayList();
@@ -69,19 +82,21 @@ public class MainActivity extends AppCompatActivity {
         btnNext = (ImageButton)findViewById(R.id.btnNext);
         btnPrevious = (ImageButton)findViewById(R.id.btnPrevious);
         cover = (ImageView) findViewById(R.id.cover);
-        playerViewSwitcher = (ViewSwitcher) findViewById(R.id.playerViewSwitcher);
+        lecteur = (LinearLayout)findViewById(R.id.lecteur);
 
+        playerViewSwitcher = (ViewSwitcher) findViewById(R.id.playerViewSwitcher);
         playerViewSwitcher.reset();
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // Chargement de la playList de l'utilisateur.
         Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Setting.API_HOST)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-
         PlaylistService service = retrofit.create(PlaylistService.class);
         Call<PlayList> caller = service.get(User.getOauthToken(getApplicationContext()));
-
         caller.enqueue(new Callback<PlayList>() {
             @Override
             public void onResponse(Call<PlayList> call, Response<PlayList> response) {
@@ -95,50 +110,67 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                ArrayAdapter adapter = new MusicAdapter(getApplicationContext(), R.layout.music_item, playList.getMusics());
-                listView.setAdapter(adapter);
+                readAdapter = new MusicAdapter(getApplicationContext(), R.layout.music_item, playList.getMusics());
+                editionAdapter = new MusicEditionAdapter(getApplicationContext(), R.layout.music_edition_item, playList.getMusics());
+
+                listView.setAdapter(readAdapter);
+
+                editionAdapter.setListener(new MusicEditionAdapterListener() {
+                    @Override
+                    public void onEditMusic(Music music) {
+                        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(MUSIC_RANK_TAG, music.getRank());
+                        bundle.putInt(PLAYLIST_ID_TAG, playList.getId());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        // Toast.makeText(getApplicationContext(), "Edition item", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onDeleteMusic(Music music) {
+                        Toast.makeText(getApplicationContext(), "Supprimer item", Toast.LENGTH_LONG).show();
+                        playList.getMusics().remove(music);
+                        editionAdapter.notifyDataSetChanged();
+                    }
+                });
             }
 
             @Override
             public void onFailure(Call<PlayList> call, Throwable throwable) {
-                Toast.makeText(getApplicationContext(), "Impossible d'accéder au serveur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Le serveur ne répond pas", Toast.LENGTH_LONG).show();
             }
         });
 
+        // Gestion des clicks sur les items de la playlist.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt(MUSIC_RANK_TAG, position + 1);
-                bundle.putInt(PLAYLIST_ID_TAG, playList.getId());
-                intent.putExtras(bundle);
-                startActivity(intent);
-                */
                 startMusicByIndex(position);
             }
         });
 
-        // Evénement appelé lorque la musique est prête (que la lecture commence).
-        // Permet d'arrêter l'animation loader.
+        // Gestion des événements du YoutubePlayer.
         youtubePlayer.setYoutubePlayerListener(new YoutubePlayerListener() {
+            // Evénement appelé lorque la musique est prête (quand la lecture commence).
+            // Permet d'arrêter l'animation loader.
             @Override
             public void onMusicBegin() {
-                Log.i("BEGIN", "The music begin !");
+                Log.i("MUSIC PLAYER", "START");
                 playerViewSwitcher.setDisplayedChild(1);
             }
-
+            // Evénement appelé quand la lecture de la musique est terminé.
+            // Permet de passer au morceau suivant.
             @Override
             public void onMusicEnd() {
-                Log.i("END", "The music is finished");
+                Log.i("MUSIC PLAYER", "STOP");
                 startMusicByIndex(selectedIndex + 1);
             }
-
         });
 
-
-        // Bontons du lecteur
+        ////////////////////////
+        // Bontons du lecteur //
+        ////////////////////////
 
         // Bouton Play / Pause
         btnPlayPause.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         // Bouton musique suivante
         btnPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
                 startMusicByIndex(selectedIndex - 1);
             }
         });
-
         // Bouton musique précédente
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +211,58 @@ public class MainActivity extends AppCompatActivity {
         // Stop le lecteur si on change d'activité.
         youtubePlayer.pause();
         btnPlayPause.setImageResource(R.drawable.ic_btnplay);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        for(int i=0; i<menu.size(); ++i) {
+            menu.getItem(i).setVisible(true);
+        }
+        for(int i=0; i<menu.size(); ++i) {
+            int id = menu.getItem(i).getItemId();
+            if(isEditionMode) {
+                if(id == R.id.action_share || id == R.id.action_edit)
+                    menu.getItem(i).setVisible(false);
+            } else {
+                if(id == R.id.action_check)
+                    menu.getItem(i).setVisible(false);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Gère les différentes actions disponibles dans la toolbar de l'activité.
+     *
+     * @param item MenuItem
+     * @return boolean
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                listView.setAdapter(editionAdapter);
+                lecteur.setVisibility(LinearLayout.GONE);
+                isEditionMode = true;
+                invalidateOptionsMenu();
+                return true;
+            case R.id.action_check:
+                listView.setAdapter(readAdapter);
+                lecteur.setVisibility(LinearLayout.VISIBLE);
+                isEditionMode = false;
+                invalidateOptionsMenu();
+                return true;
+            case R.id.action_share:
+                Toast.makeText(getApplicationContext(), "Partage de la playliste", Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     /**
