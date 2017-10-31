@@ -31,20 +31,22 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchActivity extends AppCompatActivity {
-    private ListView listview;
-    private EditText search;
     private int musicRank;
     private int playlistId;
     private List<Music> searchResults;
+
+    private ListView listview;
+    private EditText search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        Bundle bundle  = getIntent().getExtras();
 
+        Bundle bundle  = getIntent().getExtras();
         musicRank = bundle.getInt(MainActivity.MUSIC_RANK_TAG);
         playlistId = bundle.getInt(MainActivity.PLAYLIST_ID_TAG);
+
         listview = (ListView) findViewById(R.id.listview);
         search = (EditText) findViewById(R.id.search);
 
@@ -105,6 +107,9 @@ public class SearchActivity extends AppCompatActivity {
                     public void onResponse(Call<Music> call, Response<Music> response) {
                         if(response.isSuccessful()) {
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean(MainActivity.IS_EDITION_MODE_TAG, true);
+                            intent.putExtras(bundle);
                             startActivity(intent);
                         } else {
                             Toast.makeText(getApplicationContext(), "Le serveur ne répond pas", Toast.LENGTH_SHORT).show();
