@@ -56,13 +56,11 @@ public class MusicEditionAdapter extends ArrayAdapter {
         }
 
         TextView title = (TextView)convertView.findViewById(R.id.title);
-        TextView author = (TextView)convertView.findViewById(R.id.author);
         ImageView cover = (ImageView)convertView.findViewById(R.id.cover);
         Button delete = (Button)convertView.findViewById(R.id.btnDelete);
         Button edit = (Button)convertView.findViewById(R.id.btnEdit);
 
         title.setText(musics.get(position).getTitle());
-        author.setText(musics.get(position).getAuthor());
         Picasso.with(getContext()).load(musics.get(position).getCover()).resize(200,200).centerCrop().into(cover);
 
         edit.setOnClickListener(new View.OnClickListener() {
