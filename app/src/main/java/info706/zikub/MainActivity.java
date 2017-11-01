@@ -264,6 +264,41 @@ public class MainActivity extends AppCompatActivity {
         btnPlayPause.setImageResource(R.drawable.ic_btnplay);
     }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        /*
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Setting.API_HOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        PlaylistService service = retrofit.create(PlaylistService.class);
+        Call<PlayList> caller = service.get(User.getOauthToken(getApplicationContext()));
+        caller.enqueue(new Callback<PlayList>() {
+            @Override
+            public void onResponse(Call<PlayList> call, Response<PlayList> response) {
+                playList = response.body();
+                // Tri de la playlist en fonction des rank.
+                Collections.sort(playList.getMusics(), new Comparator<Music>() {
+                    @Override
+                    public int compare(Music o1, Music o2) {
+                        return  o1.getRank() > o2.getRank() ? 1 : -1;
+                    }
+                });
+                readAdapter.notifyDataSetChanged();
+                editionAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<PlayList> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Le serveur ne répond pas", Toast.LENGTH_LONG).show();
+            }
+        });
+        */
+    }
+
     /**
      * Permet de modifier les items disponibles dans le menu de la toolbar.
      *
@@ -307,11 +342,15 @@ public class MainActivity extends AppCompatActivity {
                 refreshDisplayMode();
                 return true;
             case R.id.action_share:
-                Toast.makeText(getApplicationContext(), "Partage de la playliste", Toast.LENGTH_LONG).show();
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType("text/plain");
-                share.putExtra(Intent.EXTRA_TEXT, "Test de l'intent");
-                startActivity(Intent.createChooser(share, "Partage de la playliste"));
+                if(playList.getMusics().size() > 0) {
+                    Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(PLAYLIST_ID_TAG, playList.getId());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "La playliste doit au moins contenir une musique", Toast.LENGTH_LONG).show();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

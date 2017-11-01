@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -55,7 +53,7 @@ public class MusicEditionAdapter extends ArrayAdapter {
             convertView = inflater.inflate(R.layout.music_edition_item, null);
         }
 
-        TextView title = (TextView)convertView.findViewById(R.id.title);
+        TextView title = (TextView)convertView.findViewById(R.id.name);
         ImageView cover = (ImageView)convertView.findViewById(R.id.cover);
         Button delete = (Button)convertView.findViewById(R.id.btnDelete);
         Button edit = (Button)convertView.findViewById(R.id.btnEdit);

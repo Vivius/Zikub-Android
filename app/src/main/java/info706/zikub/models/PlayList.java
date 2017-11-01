@@ -16,6 +16,12 @@ public class PlayList {
         musics = new ArrayList<>();
     }
 
+    public PlayList(String name, String description) {
+        this();
+        this.name = name;
+        this.description = description;
+    }
+
     public List<Music> getMusics() {
         return musics;
     }

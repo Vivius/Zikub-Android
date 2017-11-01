@@ -47,7 +47,7 @@ public class MusicAdapter extends ArrayAdapter {
             convertView = inflater.inflate(R.layout.music_item, null);
         }
 
-        TextView title = (TextView)convertView.findViewById(R.id.title);
+        TextView title = (TextView)convertView.findViewById(R.id.name);
         TextView author = (TextView)convertView.findViewById(R.id.author);
         ImageView cover = (ImageView)convertView.findViewById(R.id.cover);
 

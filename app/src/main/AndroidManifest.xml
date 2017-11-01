@@ -27,11 +27,19 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="wwww.zikub.fr" android:pathPrefix="/playlist" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity android:name=".SearchActivity" />
+        <activity android:name=".ShareActivity" />
     </application>
 
 </manifest>
