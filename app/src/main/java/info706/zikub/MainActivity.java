@@ -34,17 +34,21 @@ import info706.zikub.models.Music;
 import info706.zikub.models.PlayList;
 import info706.zikub.models.Setting;
 import info706.zikub.models.User;
+import info706.zikub.services.MusicService;
 import info706.zikub.services.PlaylistService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     public static final String PLAYLIST_ID_TAG = "PLAYLIST_ID";
     public static final String MUSIC_RANK_TAG = "MUSIC_RANK";
     public static final String IS_EDITION_MODE_TAG = "IS_EDITION_MODE";
+
+    private static final int PLAYLIST_SIZE = 5;
 
     // Vars
     private YoutubePlayer youtubePlayer;
@@ -131,10 +135,28 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onDeleteMusic(Music music) {
-                        playList.getMusics().remove(music);
-                        editionAdapter.notifyDataSetChanged();
-                        refreshDisplayMode();
+                    public void onDeleteMusic(final Music music) {
+                        Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(Setting.API_HOST)
+                            .addConverterFactory(ScalarsConverterFactory.create())
+                            .build();
+
+                        MusicService service = retrofit.create(MusicService.class);
+                        Call<String> caller = service.delete(User.getOauthToken(getApplicationContext()), music.getId());
+                        caller.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                Log.i("RESPONSE", response.body());
+                                playList.getMusics().remove(music);
+                                editionAdapter.notifyDataSetChanged();
+                                refreshDisplayMode();
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), "Erreur lors de la suppression", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                 });
 
@@ -179,6 +201,19 @@ public class MainActivity extends AppCompatActivity {
             public void onMusicEnd() {
                 Log.i("MUSIC PLAYER", "STOP");
                 startMusicByIndex(selectedIndex + 1);
+            }
+        });
+
+        // Permet d'ajouter une musique à la playliste.
+        btnAddMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(MUSIC_RANK_TAG, playList.getMusics().size() + 1);
+                bundle.putInt(PLAYLIST_ID_TAG, playList.getId());
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
@@ -309,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
         if(isEditionMode) {
             listView.setAdapter(editionAdapter);
             lecteur.setVisibility(LinearLayout.GONE);
-            if(playList.getMusics().size() < 5)
+            if(playList.getMusics().size() < PLAYLIST_SIZE)
                 btnAddMusic.setVisibility(Button.VISIBLE);
         } else {
             listView.setAdapter(readAdapter);
