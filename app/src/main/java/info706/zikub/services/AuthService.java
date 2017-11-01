@@ -1,14 +1,11 @@
 package info706.zikub.services;
 
-import info706.zikub.models.User;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface AuthService {
-
     // Returns a token if authentificated.
     @FormUrlEncoded
     @POST("login")

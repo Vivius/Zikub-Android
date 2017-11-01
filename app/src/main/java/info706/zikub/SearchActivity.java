@@ -22,6 +22,7 @@ import info706.zikub.models.Music;
 import info706.zikub.models.PlayList;
 import info706.zikub.models.Setting;
 import info706.zikub.models.User;
+import info706.zikub.services.MusicService;
 import info706.zikub.services.PlaylistService;
 import info706.zikub.services.YoutubeService;
 import retrofit2.Call;
@@ -99,8 +100,8 @@ public class SearchActivity extends AppCompatActivity {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-                PlaylistService service = retrofit.create(PlaylistService.class);
-                Call<Music> caller = service.updateList(User.getOauthToken(getApplicationContext()), music);
+                MusicService service = retrofit.create(MusicService.class);
+                Call<Music> caller = service.post(User.getOauthToken(getApplicationContext()), music);
 
                 caller.enqueue(new Callback<Music>() {
                     @Override
