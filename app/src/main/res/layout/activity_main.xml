@@ -27,7 +27,16 @@
         <ListView
             android:id="@+id/playlist"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content">
+
+        </ListView>
+
+        <Button
+            android:id="@+id/btnAddMusic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Ajouter" />
 
     </LinearLayout>
 

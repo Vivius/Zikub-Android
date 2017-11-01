@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewSwitcher playerViewSwitcher;
     private Toolbar toolbar;
     private LinearLayout lecteur;
+    private Button btnAddMusic;
 
     // Adapters
     private MusicEditionAdapter editionAdapter;
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         btnPrevious = (ImageButton)findViewById(R.id.btnPrevious);
         cover = (ImageView) findViewById(R.id.cover);
         lecteur = (LinearLayout)findViewById(R.id.lecteur);
+        btnAddMusic = (Button)findViewById(R.id.btnAddMusic);
 
         playerViewSwitcher = (ViewSwitcher) findViewById(R.id.playerViewSwitcher);
         playerViewSwitcher.reset();
@@ -131,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onDeleteMusic(Music music) {
                         playList.getMusics().remove(music);
                         editionAdapter.notifyDataSetChanged();
+                        refreshDisplayMode();
                     }
                 });
 
@@ -305,9 +309,12 @@ public class MainActivity extends AppCompatActivity {
         if(isEditionMode) {
             listView.setAdapter(editionAdapter);
             lecteur.setVisibility(LinearLayout.GONE);
+            if(playList.getMusics().size() < 5)
+                btnAddMusic.setVisibility(Button.VISIBLE);
         } else {
             listView.setAdapter(readAdapter);
             lecteur.setVisibility(LinearLayout.VISIBLE);
+            btnAddMusic.setVisibility(Button.GONE);
         }
         invalidateOptionsMenu();
     }
