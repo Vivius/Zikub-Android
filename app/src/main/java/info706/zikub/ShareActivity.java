@@ -80,7 +80,7 @@ public class ShareActivity extends AppCompatActivity {
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");
                 share.putExtra(Intent.EXTRA_SUBJECT, "Partage de ma playliste Zikub");
-                share.putExtra(Intent.EXTRA_TEXT, "http://zikub.fr/playlist/" + playlistId);
+                share.putExtra(Intent.EXTRA_TEXT, "http://www.zikub.com/playlist/1");
                 startActivity(Intent.createChooser(share, "Partage de ma playliste"));
             }
         });
