@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,10 +19,8 @@ import android.widget.ViewSwitcher;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import info706.zikub.adapters.MusicAdapter;
 import info706.zikub.adapters.MusicEditionAdapter;
@@ -300,14 +297,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Permet de modifier les items disponibles dans le menu de la toolbar.
+     * Permet de modifier les items disponibles dans le menu de la toolbar_main.
      *
      * @param menu Menu
      * @return boolean
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
+        getMenuInflater().inflate(R.menu.toolbar_main, menu);
         for(int i=0; i<menu.size(); ++i) {
             menu.getItem(i).setVisible(true);
         }
@@ -325,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Gère les différentes actions disponibles dans la toolbar de l'activité.
+     * Gère les différentes actions disponibles dans la toolbar_main de l'activité.
      *
      * @param item MenuItem
      * @return boolean
