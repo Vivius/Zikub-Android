@@ -11,6 +11,7 @@ public class PlayList {
     private String description;
     private int user_id;
     private List<Music> musics;
+    private User user;
 
     public PlayList() {
         musics = new ArrayList<>();
@@ -48,6 +49,10 @@ public class PlayList {
 
     public int getUser_id() {
         return user_id;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     @Override

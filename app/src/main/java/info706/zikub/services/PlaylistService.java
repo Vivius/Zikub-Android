@@ -13,7 +13,11 @@ import retrofit2.http.Path;
 public interface PlaylistService {
     @Headers("Accept: application/json")
     @GET("playlists/current")
-    Call<PlayList> get(@Header("Authorization") String authorization);
+    Call<PlayList> getCurrent(@Header("Authorization") String authorization);
+
+    @Headers("Accept: application/json")
+    @GET("playlists/{id}")
+    Call<PlayList> get(@Header("Authorization") String authorization, @Path("id") int id);
 
     @Headers("Accept: application/json")
     @PUT("playlists/{id}")

@@ -53,7 +53,7 @@ public class MusicEditionAdapter extends ArrayAdapter {
             convertView = inflater.inflate(R.layout.music_edition_item, null);
         }
 
-        TextView title = (TextView)convertView.findViewById(R.id.name);
+        TextView title = (TextView)convertView.findViewById(R.id.txtName);
         ImageView cover = (ImageView)convertView.findViewById(R.id.cover);
         Button delete = (Button)convertView.findViewById(R.id.btnDelete);
         Button edit = (Button)convertView.findViewById(R.id.btnEdit);

@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             .build();
 
         PlaylistService service = retrofit.create(PlaylistService.class);
-        Call<PlayList> caller = service.get(User.getOauthToken(getApplicationContext()));
+        Call<PlayList> caller = service.getCurrent(User.getOauthToken(getApplicationContext()));
         caller.enqueue(new Callback<PlayList>() {
             @Override
             public void onResponse(Call<PlayList> call, Response<PlayList> response) {
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         PlaylistService service = retrofit.create(PlaylistService.class);
-        Call<PlayList> caller = service.get(User.getOauthToken(getApplicationContext()));
+        Call<PlayList> caller = service.getCurrent(User.getOauthToken(getApplicationContext()));
         caller.enqueue(new Callback<PlayList>() {
             @Override
             public void onResponse(Call<PlayList> call, Response<PlayList> response) {
