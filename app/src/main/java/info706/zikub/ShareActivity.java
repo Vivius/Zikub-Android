@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import info706.zikub.models.PlayList;
 import info706.zikub.models.Setting;
@@ -18,6 +19,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShareActivity extends AppCompatActivity {
+    private static final int SHARE_RESULT_CODE = 1;
+
     private Button btnShare;
     private TextInputEditText txtName;
     private TextInputEditText txtDescription;
@@ -80,8 +83,17 @@ public class ShareActivity extends AppCompatActivity {
                 share.setType("text/plain");
                 share.putExtra(Intent.EXTRA_SUBJECT, "Partage de ma playliste Zikub");
                 share.putExtra(Intent.EXTRA_TEXT, "http://www.zikub.com/playlist/" + playlistId);
-                startActivity(Intent.createChooser(share, "Partage de ma playliste"));
+                startActivityForResult(Intent.createChooser(share, "Partage de ma playliste"), SHARE_RESULT_CODE);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == SHARE_RESULT_CODE) {
+            Toast.makeText(getApplicationContext(), "Partage effectué! Retour vers votre nouvelle playliste...", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }
     }
 }

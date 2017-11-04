@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String PLAYLIST_ID_TAG = "PLAYLIST_ID";
     public static final String MUSIC_RANK_TAG = "MUSIC_RANK";
     public static final String IS_EDITION_MODE_TAG = "IS_EDITION_MODE";
+    public static final String IS_SHARED_TAG = "IS_SHARED";
 
     private static final int PLAYLIST_SIZE = 5;
 
@@ -259,41 +260,6 @@ public class MainActivity extends AppCompatActivity {
         // Stop le lecteur si on change d'activité.
         youtubePlayer.pause();
         btnPlayPause.setImageResource(R.drawable.ic_btnplay);
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        /*
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Setting.API_HOST)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        PlaylistService service = retrofit.create(PlaylistService.class);
-        Call<PlayList> caller = service.getCurrent(User.getOauthToken(getApplicationContext()));
-        caller.enqueue(new Callback<PlayList>() {
-            @Override
-            public void onResponse(Call<PlayList> call, Response<PlayList> response) {
-                playList = response.body();
-                // Tri de la playlist en fonction des rank.
-                Collections.sort(playList.getMusics(), new Comparator<Music>() {
-                    @Override
-                    public int compare(Music o1, Music o2) {
-                        return  o1.getRank() > o2.getRank() ? 1 : -1;
-                    }
-                });
-                readAdapter.notifyDataSetChanged();
-                editionAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<PlayList> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Le serveur ne répond pas", Toast.LENGTH_LONG).show();
-            }
-        });
-        */
     }
 
     /**

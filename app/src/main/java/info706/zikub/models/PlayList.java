@@ -55,6 +55,17 @@ public class PlayList {
         return user;
     }
 
+    public void fill(PlayList playList)
+    {
+        id = playList.getId();
+        created_at = playList.getCreated_at();
+        updated_at = playList.getCreated_at();
+        name = playList.getName();
+        description = playList.getDescription();
+        for(int i=0; i<getMusics().size(); ++i)
+            getMusics().set(i, playList.getMusics().get(i));
+    }
+
     @Override
     public String toString() {
         return "PlayList{" +
