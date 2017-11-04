@@ -108,69 +108,75 @@ public class MainActivity extends AppCompatActivity {
         caller.enqueue(new Callback<PlayList>() {
             @Override
             public void onResponse(Call<PlayList> call, Response<PlayList> response) {
-                playList = response.body();
+                if(response.isSuccessful()) {
+                    playList = response.body();
 
-                // Tri de la playlist en fonction des rank.
-                Collections.sort(playList.getMusics(), new Comparator<Music>() {
-                    @Override
-                    public int compare(Music o1, Music o2) {
-                        return  o1.getRank() > o2.getRank() ? 1 : -1;
+                    // Tri de la playlist en fonction des rank.
+                    Collections.sort(playList.getMusics(), new Comparator<Music>() {
+                        @Override
+                        public int compare(Music o1, Music o2) {
+                            return  o1.getRank() > o2.getRank() ? 1 : -1;
+                        }
+                    });
+
+                    // Création des adapters
+                    readAdapter = new MusicAdapter(getApplicationContext(), R.layout.music_item, playList.getMusics());
+                    editionAdapter = new MusicEditionAdapter(getApplicationContext(), R.layout.music_edition_item, playList.getMusics());
+                    editionAdapter.setListener(new MusicEditionAdapterListener() {
+                        @Override
+                        public void onEditMusic(Music music) {
+                            Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putInt(MUSIC_RANK_TAG, music.getRank());
+                            bundle.putInt(PLAYLIST_ID_TAG, playList.getId());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onDeleteMusic(final Music music) {
+                            Retrofit retrofit = new Retrofit.Builder()
+                                    .baseUrl(Setting.API_HOST)
+                                    .addConverterFactory(ScalarsConverterFactory.create())
+                                    .build();
+
+                            MusicService service = retrofit.create(MusicService.class);
+                            Call<String> caller = service.delete(User.getOauthToken(getApplicationContext()), music.getId());
+                            caller.enqueue(new Callback<String>() {
+                                @Override
+                                public void onResponse(Call<String> call, Response<String> response) {
+                                    Log.i("RESPONSE", response.body());
+                                    playList.getMusics().remove(music);
+                                    editionAdapter.notifyDataSetChanged();
+                                    refreshDisplayMode();
+                                }
+
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+                                    Toast.makeText(getApplicationContext(), "Erreur lors de la suppression", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    });
+
+                    // Récupération de paramètres optionnels.
+                    Bundle bundle  = getIntent().getExtras();
+                    if(bundle != null) {
+                        isEditionMode = bundle.getBoolean(IS_EDITION_MODE_TAG, false);
                     }
-                });
 
-                // Création des adapters
-                readAdapter = new MusicAdapter(getApplicationContext(), R.layout.music_item, playList.getMusics());
-                editionAdapter = new MusicEditionAdapter(getApplicationContext(), R.layout.music_edition_item, playList.getMusics());
-                editionAdapter.setListener(new MusicEditionAdapterListener() {
-                    @Override
-                    public void onEditMusic(Music music) {
-                        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(MUSIC_RANK_TAG, music.getRank());
-                        bundle.putInt(PLAYLIST_ID_TAG, playList.getId());
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onDeleteMusic(final Music music) {
-                        Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl(Setting.API_HOST)
-                            .addConverterFactory(ScalarsConverterFactory.create())
-                            .build();
-
-                        MusicService service = retrofit.create(MusicService.class);
-                        Call<String> caller = service.delete(User.getOauthToken(getApplicationContext()), music.getId());
-                        caller.enqueue(new Callback<String>() {
-                            @Override
-                            public void onResponse(Call<String> call, Response<String> response) {
-                                Log.i("RESPONSE", response.body());
-                                playList.getMusics().remove(music);
-                                editionAdapter.notifyDataSetChanged();
-                                refreshDisplayMode();
-                            }
-
-                            @Override
-                            public void onFailure(Call<String> call, Throwable t) {
-                                Toast.makeText(getApplicationContext(), "Erreur lors de la suppression", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-                });
-
-                // Récupération de paramètres optionnels.
-                Bundle bundle  = getIntent().getExtras();
-                if(bundle != null) {
-                    isEditionMode = bundle.getBoolean(IS_EDITION_MODE_TAG, false);
+                    // Affichage des résultats selon le mode (lecture / modification).
+                    refreshDisplayMode();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Impossible d'accéder à la playliste", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
                 }
-
-                // Affichage des résultats selon le mode (lecture / modification).
-                refreshDisplayMode();
             }
 
             @Override
             public void onFailure(Call<PlayList> call, Throwable throwable) {
-                Toast.makeText(getApplicationContext(), "Le serveur ne répond pas", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Impossible d'accéder à la playliste", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }

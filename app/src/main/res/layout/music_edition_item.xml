@@ -28,6 +28,7 @@
             android:paddingBottom="3dp"
             android:paddingTop="3dp"
             android:text="Title"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -40,6 +41,7 @@
 
             <Button
                 android:id="@+id/btnDelete"
+                style="@style/Widget.AppCompat.Button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -47,6 +49,7 @@
 
             <Button
                 android:id="@+id/btnEdit"
+                style="@style/Widget.AppCompat.Button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
