@@ -1,13 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/MyActionBar" />
+
+    <LinearLayout
+        android:id="@+id/intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Indiquez le nom et la description de votre playliste pour ensuite la partager avec vos amis !"
+            android:textAlignment="viewStart" />
+    </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/intro">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/txtName"
@@ -29,12 +61,15 @@
             android:hint="Description" />
     </android.support.design.widget.TextInputLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/btnShare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:layout_below="@+id/description"
-        android:layout_centerHorizontal="true"
-        android:text="Partager" />
+        android:layout_margin="40dp"
+        android:backgroundTint="@color/colorAccent"
+        android:contentDescription="Partager"
+        android:tint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_share_white_24dp" />
 </RelativeLayout>
 

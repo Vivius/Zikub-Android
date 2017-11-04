@@ -19,10 +19,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/AppTheme"
-            app:titleTextColor="@color/blanc" />
+            android:theme="@style/MyActionBar" />
 
         <ListView
             android:id="@+id/playlist"

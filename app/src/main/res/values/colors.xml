@@ -3,13 +3,12 @@
     <color name="colorPrimary">#022728</color>
     <color name="colorPrimaryDark">#011011</color>
     <color name="colorAccent">#DB600D</color>
-
     <color name="blanc">#ffffff</color>
 
+    <!-- Home -->
     <color name="connexion">#fff</color>
     <color name="inscription">#000</color>
     <color name="conditions">#ddd</color>
-
     <color name="facebook">#3C5998</color>
     <color name="twitter">#409AD5</color>
     <color name="google">#e14739</color>

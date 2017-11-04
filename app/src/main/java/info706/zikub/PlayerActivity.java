@@ -181,6 +181,17 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     /**
+     * Arrête le lecteur lorsque l'on quitte l'activité.
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        // Stop le lecteur si on change d'activité.
+        youtubePlayer.pause();
+        btnPlayPause.setImageResource(R.drawable.ic_btnplay);
+    }
+
+    /**
      * Crée le menu de la toolbar.
      *
      * @param menu Menu

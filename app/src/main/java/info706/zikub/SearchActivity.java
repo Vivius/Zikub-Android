@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -38,11 +40,17 @@ public class SearchActivity extends AppCompatActivity {
 
     private ListView listview;
     private EditText search;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle("Recherche YouTube");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle bundle  = getIntent().getExtras();
         musicRank = bundle.getInt(MainActivity.MUSIC_RANK_TAG);
@@ -124,5 +132,20 @@ public class SearchActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(MainActivity.IS_EDITION_MODE_TAG, true);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

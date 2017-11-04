@@ -6,10 +6,17 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
+    <!-- ActionBar (toolbar) -->
+    <style name="MyActionBar" parent="Widget.AppCompat.Light.ActionBar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/blanc</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="colorControlNormal">@color/blanc</item>
     </style>
 
+    <!-- Home -->
     <style name="btnHome">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">55dp</item>
