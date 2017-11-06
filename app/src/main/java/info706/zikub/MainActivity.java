@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Ma Playliste");
+        setTitle("Ma Playlist");
 
         // Log.d("OAUTH_TOKEN", User.getOauthToken(getApplicationContext()));
         youtubePlayer = new YoutubePlayer(this);
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     // Affichage des résultats selon le mode (lecture / modification).
                     refreshDisplayMode();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Impossible d'accéder à la playliste", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Impossible d'accéder à la playlist", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                 }
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<PlayList> call, Throwable throwable) {
-                Toast.makeText(getApplicationContext(), "Impossible d'accéder à la playliste", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Impossible d'accéder à la playlist", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }

@@ -107,14 +107,14 @@ public class PlayerActivity extends AppCompatActivity {
                     adapter = new MusicAdapter(getApplicationContext(), R.layout.music_item, playList.getMusics());
                     listView.setAdapter(adapter);
                 } else {
-                    Toast.makeText(getApplicationContext(), "La playliste n'est pas disponible...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Vous n'êtes plus connecté", Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
 
             @Override
             public void onFailure(Call<PlayList> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Impossible de récupérer la playliste", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Impossible de récupérer la playlist", Toast.LENGTH_LONG).show();
             }
         });
 

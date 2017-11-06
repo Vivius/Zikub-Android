@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="Indiquez le nom et la description de votre playliste pour ensuite la partager avec vos amis !"
+            android:text="Indiquez le nom et la description de votre playlist pour ensuite la partager avec vos amis !"
             android:textAlignment="viewStart" />
     </LinearLayout>
 

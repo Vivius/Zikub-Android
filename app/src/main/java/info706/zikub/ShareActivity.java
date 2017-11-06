@@ -80,9 +80,9 @@ public class ShareActivity extends AppCompatActivity {
                 // Partage du lien de la playliste.
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");
-                share.putExtra(Intent.EXTRA_SUBJECT, "Partage de ma playliste Zikub");
+                share.putExtra(Intent.EXTRA_SUBJECT, "Partage de ma playlist Zikub");
                 share.putExtra(Intent.EXTRA_TEXT, "http://www.zikub.com/playlist/" + playlistId);
-                startActivityForResult(Intent.createChooser(share, "Partage de ma playliste"), SHARE_RESULT_CODE);
+                startActivityForResult(Intent.createChooser(share, "Partage de ma playlist"), SHARE_RESULT_CODE);
             }
         });
     }
@@ -90,7 +90,7 @@ public class ShareActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == SHARE_RESULT_CODE) {
-            Toast.makeText(getApplicationContext(), "Partage effectué! Retour vers votre nouvelle playliste...", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Partage effectué! Retour vers votre nouvelle playlist...", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
