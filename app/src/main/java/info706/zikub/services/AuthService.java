@@ -14,5 +14,5 @@ public interface AuthService {
     // Returns a token if registered.
     @FormUrlEncoded
     @POST("register")
-    Call<String> register();
+    Call<String> register(@Field("name") String name, @Field("email") String email, @Field("password") String password, @Field("password_confirmation") String confirmation);
 }
